@@ -1,0 +1,23 @@
+// Be carreful we need to call .any? on @review.errors because @review.errors always exists
+<% if @review.errors.any? %>
+  // 0) Replace form content with our review/form partial. We let Simple form simple form generating errors
+  document.getElementById('new_review').innerHTML = "<%= j render 'reviews/form', restaurant: @restaurant, review: @review %>";
+<% else %>
+  // 1) Append review dans #reviews
+  // We create a const with the partial "review/show"
+  // We use 'j' in erb tags to escape javascript and avoid quotes issues
+  const new_review = "<%= j render 'reviews/show', review: @review %>";
+  document.getElementById('reviews').insertAdjacentHTML('beforeend', new_review );
+
+  // 2) Change review count
+  // We select #review_count div and replace HTML with a partial "restaurants/review_count"
+  document.getElementById('review_count').innerHTML = "<%= j render '<re></re>staurants/review_count', restaurant: @restaurant %>";
+
+  // 3) Empty review form content field
+  // We select #review_content input and set value to empty string
+   document.getElementById("review_content").value = ''
+
+  // 4) Remove no review message
+  // We select #no_review div and remove it
+  document.getElementById("no_review").remove();
+<% end %>
